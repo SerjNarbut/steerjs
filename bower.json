@@ -1,8 +1,9 @@
 {
     "name": "steerjs",
     "description": "Steering behaviors implementation for Javascript",
+    "homepage":"https://github.com/SerjNarbut/steerjs",
     "version": "0.1.0",
-    "private": true,
+    "private": false,
     "license": "MIT",
     "authors":[
         "SerjNarbut <serjnarbut@gmail.com>"

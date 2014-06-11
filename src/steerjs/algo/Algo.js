@@ -54,6 +54,9 @@ steerjs.evade.$inject = ['unit','leader', 'alfa'];
  * @returns {steerjs.Vector}
  */
 steerjs.arrival = function (unit, goal, closestsRadius, alfa) {
+    if(alfa > 1){
+        throw new Error("For arrival algo alfa must be less or equals than 1, but current alfa is " + alfa);
+    }
     var desiredVelocity = steerjs.Vector.minus(goal,unit.location);
     var distance = desiredVelocity.length();
 

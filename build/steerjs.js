@@ -3,7 +3,7 @@
  * steerjs - v0.1.0
  * Copyright (c) 2014, Serj Narbut
  *
- * Compiled: 2014-06-11
+ * Compiled: 2014-06-12
  *
  * steerjs is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license.php
@@ -343,6 +343,9 @@ steerjs.evade.$inject = ['unit','leader', 'alfa'];
  * @returns {steerjs.Vector}
  */
 steerjs.arrival = function (unit, goal, closestsRadius, alfa) {
+    if(alfa > 1){
+        throw new Error("For arrival algo alfa must be less or equals than 1, but current alfa is " + alfa);
+    }
     var desiredVelocity = steerjs.Vector.minus(goal,unit.location);
     var distance = desiredVelocity.length();
 

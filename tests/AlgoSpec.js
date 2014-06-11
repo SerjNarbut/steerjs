@@ -128,4 +128,26 @@ describe("Algorithm tests", function(){
         }
         expect(reach).toEqual(true);
     });
+
+    it("Arrival test - reach goal", function(){
+        var goal = new steerjs.Vector(200,345);
+        var reach = false;
+        var count = 0;
+        var fOne = steerjs.arrival(unit,goal,50, 1);
+        var fTwo = null;
+        while(!reach && count < 1000){
+            count++;
+            var force = steerjs.arrival(unit,goal,50, 1);
+            fTwo = force;
+            unit.accelaration.add(force);
+            unit.velocity.add(unit.accelaration);
+            unit.velocity.limit(unit.maxSpeed);
+            unit.location.add(unit.velocity);
+            unit.accelaration  = steerjs.Vector.zero();
+
+            reach = steerjs.Vector.distance(unit.location, goal) <= 10;
+        }
+        expect(reach).toEqual(true);
+        expect(fOne.length() > fTwo.length()).toEqual(true);
+    });
 });
