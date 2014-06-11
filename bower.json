@@ -6,6 +6,9 @@
     "private": false,
     "license": "MIT",
     "authors":[
-        "SerjNarbut <serjnarbut@gmail.com>"
+        "SerjNarbut"
+    ],
+    "ignore":[
+        "node_modules"
     ]
 }
