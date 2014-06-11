@@ -30,7 +30,6 @@ describe("Algorithm tests", function(){
 
            reach = steerjs.Vector.distance(unit.location, goal) <= 10;
         }
-        console.log("seek test -> number of iteration to reach the goal " + count);
         expect(reach).toEqual(true);
 
     });
@@ -79,6 +78,54 @@ describe("Algorithm tests", function(){
     });
 
     it("Pursuit test - reach leader", function(){
+        var leader = {
+            maxSpeed: 2,
+            location: new steerjs.Vector(200,200),
+            velocity: new steerjs.Vector(1,2),
+            accelaration: steerjs.Vector.zero()
+        };
+        var reach = false;
+        var count = 0;
+        while(!reach && count < 1000){
+            count++;
 
+            var force = steerjs.pursuit(unit,leader,2);
+
+            unit.accelaration.add(force);
+            unit.velocity.add(unit.accelaration);
+            unit.velocity.limit(unit.maxSpeed);
+            unit.location.add(unit.velocity);
+            unit.accelaration  = steerjs.Vector.zero();
+
+            reach = steerjs.Vector.distance(unit.location, leader.location) <= 10;
+        }
+        expect(reach).toEqual(true);
+    });
+
+    it("Pursuit test - reach moving leader", function(){
+        var leader = {
+            maxSpeed: 1,
+            location: new steerjs.Vector(200,200),
+            velocity: new steerjs.Vector(1,1),
+            accelaration: steerjs.Vector.zero()
+        };
+        var reach = false;
+        var count = 0;
+        while(!reach && count < 1000){
+            count++;
+
+            var force = steerjs.pursuit(unit,leader,2);
+
+            unit.accelaration.add(force);
+            unit.velocity.add(unit.accelaration);
+            unit.velocity.limit(unit.maxSpeed);
+            unit.location.add(unit.velocity);
+            unit.accelaration  = steerjs.Vector.zero();
+
+            leader.location.add(leader.velocity);
+
+            reach = steerjs.Vector.distance(unit.location, leader.location) <= 10;
+        }
+        expect(reach).toEqual(true);
     });
 });
