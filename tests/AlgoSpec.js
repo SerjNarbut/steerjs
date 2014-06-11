@@ -2,15 +2,18 @@
 
 describe("Algorithm tests", function(){
 
-    it("Seek test - reach goal", function(){
-        var goal = new steerjs.Vector(20,50);
-
-        var unit = {
+    var unit;
+    beforeEach(function(){
+        unit = {
             maxSpeed: 2,
             location: new steerjs.Vector(100,70),
             velocity: new steerjs.Vector(1,2),
             accelaration: steerjs.Vector.zero()
         };
+    });
+
+    it("Seek test - reach goal", function(){
+        var goal = new steerjs.Vector(20,50);
 
         var reach = false;
         var count = 0;
@@ -35,12 +38,6 @@ describe("Algorithm tests", function(){
     it("Flee test - distance", function(){
         var goal = new steerjs.Vector(20,50);
 
-        var unit = {
-            maxSpeed: 2,
-            location: new steerjs.Vector(100,70),
-            velocity: new steerjs.Vector(1,2),
-            accelaration: steerjs.Vector.zero()
-        };
         var distOne = steerjs.Vector.distance(goal,unit.location);
         var force = steerjs.flee(unit,goal,2);
         unit.accelaration.add(force);
@@ -56,12 +53,6 @@ describe("Algorithm tests", function(){
 
     //TODO coding test
     it("Pursuit test - distance", function(){
-        var unit = {
-            maxSpeed: 3,
-            location: new steerjs.Vector(100,70),
-            velocity: new steerjs.Vector(2,2),
-            accelaration: steerjs.Vector.zero()
-        };
 
         var leader = {
             maxSpeed: 2,
