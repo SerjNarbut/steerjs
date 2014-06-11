@@ -1,0 +1,10 @@
+{
+    "name": "steerjs",
+    "description": "Steering behaviors implementation for Javascript",
+    "version": "0.1.0",
+    "private": true,
+    "license": "MIT",
+    "authors":[
+        "SerjNarbut <serjnarbut@gmail.com>"
+    ]
+}
