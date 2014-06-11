@@ -54,7 +54,7 @@ module.exports = function(grunt) {
         karma:{
             unit:{
                 configFile:"karma.conf.js",
-                background:true
+                singleRun:true
             }
         }
 
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-karma");
 
     grunt.registerTask("build", ['concat','uglify']);
-    grunt.registerTask("test",['karma:unit']);
+    grunt.registerTask("test",['karma']);
 
-    grunt.registerTask("buildTest",['concat','uglify','karma:unit']);
+    grunt.registerTask("buildTest",['concat','uglify','karma']);
 };
