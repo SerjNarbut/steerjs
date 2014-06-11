@@ -56,6 +56,34 @@ describe("Algorithm tests", function(){
 
     //TODO coding test
     it("Pursuit test - distance", function(){
+        var unit = {
+            maxSpeed: 3,
+            location: new steerjs.Vector(100,70),
+            velocity: new steerjs.Vector(2,2),
+            accelaration: steerjs.Vector.zero()
+        };
+
+        var leader = {
+            maxSpeed: 2,
+            location: new steerjs.Vector(200,200),
+            velocity: new steerjs.Vector(1,2),
+            accelaration: steerjs.Vector.zero()
+        };
+
+        var distOne = steerjs.Vector.distance(unit.location, leader.location);
+
+        for(var i = 0; i < 5;i++){
+            var force = steerjs.pursuit(unit,leader,2);
+            unit.accelaration.add(force);
+            unit.velocity.add(unit.accelaration);
+            unit.velocity.limit(unit.maxSpeed);
+            unit.location.add(unit.velocity);
+            unit.accelaration = steerjs.Vector.zero();
+        }
+
+
+        var distTwo = steerjs.Vector.distance(unit.location, leader.location);
+        expect(distTwo < distOne).toEqual(true);
 
     });
 

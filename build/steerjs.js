@@ -706,7 +706,7 @@ steerjs.Vector.multiple = function(vectorOne, vectorTwo){
 
 steerjs.Vector.multipleScalar = function(vectorOne, scalar){
     var res = vectorOne.clone();
-    res.multipleScalar(scalar);
+    res.multiScalar(scalar);
     return res;
 };
 
