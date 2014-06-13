@@ -8,7 +8,7 @@ describe("Algorithm tests", function(){
             maxSpeed: 2,
             location: new steerjs.Vector(100,70),
             velocity: new steerjs.Vector(1,2),
-            accelaration: steerjs.Vector.zero()
+            acceleration: steerjs.Vector.zero()
         };
     });
 
@@ -22,11 +22,11 @@ describe("Algorithm tests", function(){
 
             var force = steerjs.seek(unit,goal,2);
 
-            unit.accelaration.add(force);
-            unit.velocity.add(unit.accelaration);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
             unit.velocity.limit(unit.maxSpeed);
             unit.location.add(unit.velocity);
-            unit.accelaration  = steerjs.Vector.zero();
+            unit.acceleration  = steerjs.Vector.zero();
 
            reach = steerjs.Vector.distance(unit.location, goal) <= 10;
         }
@@ -39,11 +39,11 @@ describe("Algorithm tests", function(){
 
         var distOne = steerjs.Vector.distance(goal,unit.location);
         var force = steerjs.flee(unit,goal,2);
-        unit.accelaration.add(force);
-        unit.velocity.add(unit.accelaration);
+        unit.acceleration.add(force);
+        unit.velocity.add(unit.acceleration);
         unit.velocity.limit(unit.maxSpeed);
         unit.location.add(unit.velocity);
-        unit.accelaration = steerjs.Vector.zero();
+        unit.acceleration = steerjs.Vector.zero();
 
         var distTwo = steerjs.Vector.distance(unit.location, goal);
 
@@ -57,18 +57,18 @@ describe("Algorithm tests", function(){
             maxSpeed: 2,
             location: new steerjs.Vector(200,200),
             velocity: new steerjs.Vector(1,2),
-            accelaration: steerjs.Vector.zero()
+            acceleration: steerjs.Vector.zero()
         };
 
         var distOne = steerjs.Vector.distance(unit.location, leader.location);
 
         for(var i = 0; i < 5;i++){
             var force = steerjs.pursuit(unit,leader,2);
-            unit.accelaration.add(force);
-            unit.velocity.add(unit.accelaration);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
             unit.velocity.limit(unit.maxSpeed);
             unit.location.add(unit.velocity);
-            unit.accelaration = steerjs.Vector.zero();
+            unit.acceleration = steerjs.Vector.zero();
         }
 
 
@@ -82,7 +82,7 @@ describe("Algorithm tests", function(){
             maxSpeed: 2,
             location: new steerjs.Vector(200,200),
             velocity: new steerjs.Vector(1,2),
-            accelaration: steerjs.Vector.zero()
+            acceleration: steerjs.Vector.zero()
         };
         var reach = false;
         var count = 0;
@@ -91,11 +91,11 @@ describe("Algorithm tests", function(){
 
             var force = steerjs.pursuit(unit,leader,2);
 
-            unit.accelaration.add(force);
-            unit.velocity.add(unit.accelaration);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
             unit.velocity.limit(unit.maxSpeed);
             unit.location.add(unit.velocity);
-            unit.accelaration  = steerjs.Vector.zero();
+            unit.acceleration  = steerjs.Vector.zero();
 
             reach = steerjs.Vector.distance(unit.location, leader.location) <= 10;
         }
@@ -107,7 +107,7 @@ describe("Algorithm tests", function(){
             maxSpeed: 1,
             location: new steerjs.Vector(200,200),
             velocity: new steerjs.Vector(1,1),
-            accelaration: steerjs.Vector.zero()
+            acceleration: steerjs.Vector.zero()
         };
         var reach = false;
         var count = 0;
@@ -116,17 +116,41 @@ describe("Algorithm tests", function(){
 
             var force = steerjs.pursuit(unit,leader,2);
 
-            unit.accelaration.add(force);
-            unit.velocity.add(unit.accelaration);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
             unit.velocity.limit(unit.maxSpeed);
             unit.location.add(unit.velocity);
-            unit.accelaration  = steerjs.Vector.zero();
+            unit.acceleration  = steerjs.Vector.zero();
 
             leader.location.add(leader.velocity);
 
             reach = steerjs.Vector.distance(unit.location, leader.location) <= 10;
         }
         expect(reach).toEqual(true);
+    });
+
+    it("Evade test - distance", function(){
+        var leader = {
+            maxSpeed: 2,
+            location: new steerjs.Vector(200,200),
+            velocity: new steerjs.Vector(1,2),
+            acceleration: steerjs.Vector.zero()
+        };
+
+        var distOne = steerjs.Vector.distance(unit.location, leader.location);
+
+        for(var i = 0; i < 5;i++){
+            var force = steerjs.evade(unit,leader,2);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
+            unit.velocity.limit(unit.maxSpeed);
+            unit.location.add(unit.velocity);
+            unit.acceleration = steerjs.Vector.zero();
+        }
+
+
+        var distTwo = steerjs.Vector.distance(unit.location, leader.location);
+        expect(distTwo < distOne).toEqual(true);
     });
 
     it("Arrival test - reach goal", function(){
@@ -139,11 +163,11 @@ describe("Algorithm tests", function(){
             count++;
             var force = steerjs.arrival(unit,goal,50, 1);
             fTwo = force;
-            unit.accelaration.add(force);
-            unit.velocity.add(unit.accelaration);
+            unit.acceleration.add(force);
+            unit.velocity.add(unit.acceleration);
             unit.velocity.limit(unit.maxSpeed);
             unit.location.add(unit.velocity);
-            unit.accelaration  = steerjs.Vector.zero();
+            unit.acceleration  = steerjs.Vector.zero();
 
             reach = steerjs.Vector.distance(unit.location, goal) <= 10;
         }
