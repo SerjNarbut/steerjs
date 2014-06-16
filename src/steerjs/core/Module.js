@@ -95,7 +95,7 @@ steerjs.Module.prototype.handlerConfig = function () {
     if(arguments == undefined || arguments == null){
         throw new Error("Config event handler function is empty");
     }
-    this.$injector.resolve(arguments, this);
+    this.$injector.resolve(arguments[0], this);
     return this;
 };
 
