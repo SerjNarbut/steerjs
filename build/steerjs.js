@@ -3,7 +3,7 @@
  * steerjs - v0.1.0
  * Copyright (c) 2014, Serj Narbut
  *
- * Compiled: 2014-06-12
+ * Compiled: 2014-06-16
  *
  * steerjs is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license.php
@@ -975,7 +975,7 @@ steerjs.Module.prototype.handlerConfig = function () {
     if(arguments == undefined || arguments == null){
         throw new Error("Config event handler function is empty");
     }
-    this.$injector.resolve(arguments, this);
+    this.$injector.resolve(arguments[0], this);
     return this;
 };
 
