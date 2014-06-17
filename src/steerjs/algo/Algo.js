@@ -270,3 +270,24 @@ steerjs.leaderFollowing = function(unit, leader, units, leaderDistance, sightRad
 
 };
 steerjs.leaderFollowing.$inject = ['unit','leader','units', 'leaderDistance', 'sightRadius', 'sepRadius', 'alfaSep', 'alfa'];
+
+steerjs.pathFollowing = function(unit, path, readius, alfa){
+    if (path != null){
+        var target = path[unit.wayPointIndex];
+        if(steerjs.Vector.distance(unit.location, target) < readius){
+            unit.wayPointIndex++;
+            if(unit.wayPointIndex > radius.length){
+                unit.wayPointIndex = null;
+            }
+        }
+        if(unit.wayPointIndex != null){
+            target  = path[unit.wayPointIndex];
+            return steerjs.seek(unit,target, alfa);
+        }else{
+            return steerjs.Vector.zero();
+        }
+    }else{
+        return steerjs.Vector.zero();
+    }
+};
+steerjs.pathFollowing.$inject = ['unit','path','radius','alfa'];
