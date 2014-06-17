@@ -7,6 +7,7 @@ steerjs.EventHandler = function(){
     this.event = null;
     this.algoRunner = null;
     this.handler = {};
+    this.$injector = new steerjs.Injector();
 };
 
 steerjs.EventHandler.prototype.constructor = steerjs.EventHandler;

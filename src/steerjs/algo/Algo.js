@@ -291,3 +291,30 @@ steerjs.pathFollowing = function(unit, path, readius, alfa){
     }
 };
 steerjs.pathFollowing.$inject = ['unit','path','radius','alfa'];
+
+steerjs.collisionAvoidance = function(unit, obstacles, alfa){
+    var ahead = null;
+    var aheadTwo = null;
+    function intersetcWithCircle(ahead, aheadTwo, circle){
+        return steerjs.Vector.distance(circle.center,ahead) <= circle.radius || steerjs.Vector.distance(circle.center, aheadTwo) <= circle.radius;
+    }
+
+    function getClosestsCircle(){
+        var findCircle = null;
+        var len = obstacles.length;
+        for(var i =0; i < len; i++){
+            var obstacle = obstacles[i];
+            var hasCollision = intersetcWithCircle(ahead, aheadTwo, obstacle);
+            if(hasCollision && ( findCircle == null || steerjs.Vector.distance(unit.location, obstacle) < steerjs.Vector.distance(unit.loction, findCircle))){
+                findCircle = obstacle;
+            }
+        }
+        return obstacle;
+    }
+
+    var steerForce= steerjs.Vector.zero();
+    var findedCircle = getClosestsCircle();
+    if(findedCircle != null){
+
+    }
+};

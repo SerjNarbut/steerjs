@@ -74,7 +74,14 @@ steerjs.Injector.prototype.get = function (name) {
         console.log("Resolving dependency " + name);
     }
     if (this.canResolve(name)) {
-        return this.dependencies[name];
+        var ans =  this.dependencies[name];
+        if(ans == undefined){
+            ans = this.services[name];
+        }
+        if(ans == undefined){
+            ans = this.services[name+"Service"];
+        }
+        return ans;
     }
     return null;
 };

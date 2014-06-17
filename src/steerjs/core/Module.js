@@ -29,11 +29,7 @@ steerjs.Module.prototype.constant = function (name, value) {
     if(steerjs.isFunction(value)){
       throw new Error("Constant" + name + " couldn't be a function");
     }
-    if(!this.$injector.canResolve(name)){
-        this.$injector.registerConstant(name, value);
-    }else{
-        console.log("Try to redefined constant " + name);
-    }
+    this.$injector.registerConstant(name, value);
     return this;
 };
 

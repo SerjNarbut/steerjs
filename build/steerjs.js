@@ -1,9 +1,9 @@
 /**
  * @license
- * steerjs - v0.1.0
+ * steerjs - v0.1.1
  * Copyright (c) 2014, Serj Narbut
  *
- * Compiled: 2014-06-16
+ * Compiled: 2014-06-17
  *
  * steerjs is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license.php
@@ -171,7 +171,14 @@ steerjs.Injector.prototype.get = function (name) {
         console.log("Resolving dependency " + name);
     }
     if (this.canResolve(name)) {
-        return this.dependencies[name];
+        var ans =  this.dependencies[name];
+        if(ans == undefined){
+            ans = this.services[name];
+        }
+        if(ans == undefined){
+            ans = this.services[name+"Service"];
+        }
+        return ans;
     }
     return null;
 };
@@ -560,6 +567,54 @@ steerjs.leaderFollowing = function(unit, leader, units, leaderDistance, sightRad
 };
 steerjs.leaderFollowing.$inject = ['unit','leader','units', 'leaderDistance', 'sightRadius', 'sepRadius', 'alfaSep', 'alfa'];
 
+steerjs.pathFollowing = function(unit, path, readius, alfa){
+    if (path != null){
+        var target = path[unit.wayPointIndex];
+        if(steerjs.Vector.distance(unit.location, target) < readius){
+            unit.wayPointIndex++;
+            if(unit.wayPointIndex > radius.length){
+                unit.wayPointIndex = null;
+            }
+        }
+        if(unit.wayPointIndex != null){
+            target  = path[unit.wayPointIndex];
+            return steerjs.seek(unit,target, alfa);
+        }else{
+            return steerjs.Vector.zero();
+        }
+    }else{
+        return steerjs.Vector.zero();
+    }
+};
+steerjs.pathFollowing.$inject = ['unit','path','radius','alfa'];
+
+steerjs.collisionAvoidance = function(unit, obstacles, alfa){
+    var ahead = null;
+    var aheadTwo = null;
+    function intersetcWithCircle(ahead, aheadTwo, circle){
+        return steerjs.Vector.distance(circle.center,ahead) <= circle.radius || steerjs.Vector.distance(circle.center, aheadTwo) <= circle.radius;
+    }
+
+    function getClosestsCircle(){
+        var findCircle = null;
+        var len = obstacles.length;
+        for(var i =0; i < len; i++){
+            var obstacle = obstacles[i];
+            var hasCollision = intersetcWithCircle(ahead, aheadTwo, obstacle);
+            if(hasCollision && ( findCircle == null || steerjs.Vector.distance(unit.location, obstacle) < steerjs.Vector.distance(unit.loction, findCircle))){
+                findCircle = obstacle;
+            }
+        }
+        return obstacle;
+    }
+
+    var steerForce= steerjs.Vector.zero();
+    var findedCircle = getClosestsCircle();
+    if(findedCircle != null){
+
+    }
+};
+
 /***
  * @class Vector
  * Implementation of 2d float vector <x,y>
@@ -909,11 +964,7 @@ steerjs.Module.prototype.constant = function (name, value) {
     if(steerjs.isFunction(value)){
       throw new Error("Constant" + name + " couldn't be a function");
     }
-    if(!this.$injector.canResolve(name)){
-        this.$injector.registerConstant(name, value);
-    }else{
-        console.log("Try to redefined constant " + name);
-    }
+    this.$injector.registerConstant(name, value);
     return this;
 };
 
