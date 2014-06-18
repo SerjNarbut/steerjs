@@ -20,6 +20,14 @@ steerjs.module = function(name, dependencies){
             }
         }
         var module = new steerjs.Module(name, injector);
+        for(var i = 0; i < dependencies.length; i++){
+            if(!steerjs.$globalInjector.canResolve(dependencies[i])){
+                throw new Error("Cant resolve " + dependencies[i] + " dependency");
+            }else{
+                var depModule = steerjs.$globalInjector.get(dependencies[i]);
+                module.$handler.handler = steerjs.extend(depModule.$handler.handler)
+            }
+        }
         steerjs.$globalInjector.register(name, module);
         return module;
     } else if(steerjs.$globalInjector.canResolve(name) && dependencies == undefined){

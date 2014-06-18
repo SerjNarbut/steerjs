@@ -292,9 +292,16 @@ steerjs.pathFollowing = function(unit, path, readius, alfa){
 };
 steerjs.pathFollowing.$inject = ['unit','path','radius','alfa'];
 
-steerjs.collisionAvoidance = function(unit, obstacles, alfa){
-    var ahead = null;
-    var aheadTwo = null;
+steerjs.collisionAvoidance = function(unit, obstacles, maxAhead, alfa){
+    var tempVelocity = unit.velocity.clone();
+    tempVelocity.normalize();
+    tempVelocity.multiScalar(maxAhead * unit.velocity.length() / unit.maxSpeed);
+
+    var ahead = unit.location.clone();
+    ahead.add(tempVelocity);
+    tempVelocity.multiScalar(0.5);
+    var aheadTwo = unit.location.clone();
+    aheadTwo.add(tempVelocity);
     function intersetcWithCircle(ahead, aheadTwo, circle){
         return steerjs.Vector.distance(circle.center,ahead) <= circle.radius || steerjs.Vector.distance(circle.center, aheadTwo) <= circle.radius;
     }
@@ -315,6 +322,11 @@ steerjs.collisionAvoidance = function(unit, obstacles, alfa){
     var steerForce= steerjs.Vector.zero();
     var findedCircle = getClosestsCircle();
     if(findedCircle != null){
-
+        var force = steerjs.Vector.minus(ahead, findedCircle.center);
+        force.normalize();
+        force.multi(alfa);
+        return force;
+    }else{
+        return steerjs.Vector.zero();
     }
 };
