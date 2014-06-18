@@ -61,7 +61,7 @@ function game(){
         .service("UnitGenerator", function(ANGLE, AngleConverter, SpriteFactory){
             var current = 1;
             var center = new steerjs.Vector(400,300);
-            var r = 100;
+            var r = 150;
             function coordinate(angle){
                 return new steerjs.Vector(Math.floor(center.x +r * Math.sin(angle)), Math.floor(center.y + r*Math.cos(angle)) );
             }
