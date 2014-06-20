@@ -120,7 +120,8 @@ function game(){
 
     gameApp.run(function(Stage, Renderer, UnitGenerator, MAX_DIST, MAX_DIST_GOAL){
        // document.body.appendChild(Renderer.getRender().view);
-        $("#testGame").append(Renderer.getRender().view);
+       //$("#testGame").append(Renderer.getRender().view);
+        document.getElementById("testGame").appendChild(Renderer.getRender().view);
         var units = [];
 
 
@@ -181,5 +182,4 @@ function game(){
 
 }
 
-
-$(document).ready(game);
+game();
